@@ -3,6 +3,9 @@ import PersonalDetails from './Forms/PersonalDetails'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight, Layout } from 'lucide-react'
 import Summary from './Forms/Summary'
+import Experience from './Forms/Experience'
+import Education from './Forms/Education'
+import Skill from './Forms/Skill'
 
 const FormSection = () => {
 
@@ -45,9 +48,12 @@ const FormSection = () => {
       { activeFromIndex===1? <PersonalDetails enableNext={setEnableNext} /> : null }
       {/* Summery */}
       {activeFromIndex===2?<Summary enableNext={setEnableNext}/> : null}
-      {/* Experience */}
       {/* Education */}
+      {activeFromIndex===3? <Education enableNext={setEnableNext}/>:null}
       {/* Skills */}
+      {activeFromIndex===4? <Skill enableNext={setEnableNext} /> : null}
+      {/* Experience */}
+      {activeFromIndex===5? <Experience enableNext={setEnableNext} /> : null}
     </div>
   )
 }

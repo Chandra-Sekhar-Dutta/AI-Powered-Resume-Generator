@@ -4,7 +4,7 @@ const Education = ({ resumeInfo }) => {
     return (
         <div className="px-4 py-2">
             <h2
-                className="text-lg font-semibold text-center text-gray-800"
+                className="text-lg font-semibold text-left text-gray-800"
                 style={{ color: resumeInfo?.themeColor }}
             >
                 Education

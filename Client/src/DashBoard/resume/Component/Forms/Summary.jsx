@@ -3,17 +3,21 @@ import { ResumeInfoContext } from '@/Context/ResumeInfoContext'
 import React, { useContext, useEffect, useState } from 'react'
 import GlobalAPI from './../../../../../Service/GlobalAPI';
 import { useParams } from 'react-router-dom';
-import { LoaderCircle } from 'lucide-react';
+import { Brain, LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { main } from './../../../../../Service/AIModel';
 
 
 const Summary = ({ enableNext }) => {
+
+    const prompt = "Write a brief summary about {jobTitle}, highlighting your key skills, and career goals. Keep it concise and professional, ideally within 1-2 sentences. Focus on what makes you unique and what you can bring to a potential employer.dont write like this-[Mention 2-3 key technologies like React, Node.js, Python]. Write the skills directly";
 
     const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext)
     const params = useParams()
 
     const [summery, setSummery] = useState()
     const [loading, setLoading] = useState(false)
+    const [GotAIResponse, setGotAIResponse] = useState(false)
 
     useEffect(() => {
         summery && setResumeInfo({
@@ -21,6 +25,30 @@ const Summary = ({ enableNext }) => {
             summery: summery
         })
     }, [summery])
+
+    const generateSummaryFromAI = async () => {
+        const PROMPT = prompt.replace('{jobTitle}', resumeInfo?.jobTitle);
+        console.log("Prompt for AI: ", PROMPT);
+
+        try {
+            const res = await main(PROMPT);
+            setSummery(res);
+
+            setGotAIResponse(true)
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to generate summary from AI");
+        }
+    }
+
+    useEffect(() => {
+        if (!summery || !summery.trim()) {
+            enableNext(false);
+        } else {
+            enableNext(true);
+        }
+    }, [summery, enableNext]);
+
 
     const onSave = (e) => {
         e.preventDefault()
@@ -45,6 +73,7 @@ const Summary = ({ enableNext }) => {
                 setLoading(false)
                 console.error("Error updating resume details:", err)
             })
+        enableNext(true)
 
     }
 
@@ -68,10 +97,16 @@ const Summary = ({ enableNext }) => {
                             required
                             onSubmit={onSave}
                             defaultValue={summery ? summery : resumeInfo?.summery}
+                            value={summery}
 
                             onChange={(e) => setSummery(e.target.value)}
                         />
-                        <Button variant="outline" className="whitespace-nowrap" type="button">
+                        <Button
+                            variant="outline"
+                            className="whitespace-nowrap"
+                            type="button"
+                            onClick={generateSummaryFromAI}>
+                            <Brain />
                             Generate from AI
                         </Button>
                     </div>

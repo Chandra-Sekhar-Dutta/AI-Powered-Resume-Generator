@@ -5,7 +5,7 @@ const ProfessionalExperience = ({ resumeInfo }) => {
     <div className="px-4 py-2">
       <h2
         style={{ color: resumeInfo?.themeColor }}
-        className="text-lg font-semibold text-center"
+        className="text-lg font-semibold text-left"
       >
         Professional Experience
       </h2>
