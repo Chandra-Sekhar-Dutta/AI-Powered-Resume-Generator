@@ -20,7 +20,7 @@ const ResumePreview = () => {
       <Summery resumeInfo={resumeInfo}/>
 
       {/* educational details */}
-      <Education resumeInfo={resumeInfo}/>
+      <Education resumeInfo={resumeInfo} />
       
       {/* skills */}
       <Skill resumeInfo={resumeInfo}/>

@@ -14,7 +14,7 @@ const Education = ({ resumeInfo }) => {
                 className="my-4 border-t-2"
             />
 
-            {resumeInfo?.education.map((edu, index) => (
+            {resumeInfo?.education?.map((edu, index) => (
                 <div key={index} className="mb-4">
                     <h3 className="text-base font-semibold text-gray-800">
                         {edu?.universityName}

@@ -148,6 +148,8 @@ const Education = ({ enableNext }) => {
                                     <option value="M.Com">M.Com</option>
                                     <option value="Ph.D">Ph.D</option>
                                     <option value="Diploma">Diploma</option>
+                                    <option value="12th">12th</option>
+                                    <option value="10th">10th</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>

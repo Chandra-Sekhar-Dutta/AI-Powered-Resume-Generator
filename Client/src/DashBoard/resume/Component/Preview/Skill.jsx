@@ -17,7 +17,7 @@ const Skill = ({ resumeInfo }) => {
 
       {/* Skills */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3">
-        {resumeInfo?.skills.map((skill, index) => (
+        {resumeInfo?.skills?.map((skill, index) => (
           <div key={index}>
             {/* Category */}
             <h3

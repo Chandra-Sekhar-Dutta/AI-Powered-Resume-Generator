@@ -4,14 +4,39 @@ import FormSection from '../../Component/FormSection'
 import ResumePreview from '../../Component/ResumePreview'
 import { ResumeInfoContext } from '@/Context/ResumeInfoContext'
 import Dummy from '@/Data/Dummy'
+import GlobalAPI from './../../../../../Service/GlobalAPI'
 
 const EditResume = () => {
   const params = useParams()
   const [resumeInfo, setResumeInfo] = useState()
 
   useEffect(() => {
-    setResumeInfo(Dummy)
+    // setResumeInfo(Dummy)
+    GetResumeInfoFromDatabase()
   }, [])
+
+  const GetResumeInfoFromDatabase = () => {
+    // Fetch Resume Info from Database using resumeId from params
+    GlobalAPI.GetResumeInfoByID(params?.resumeId)
+      .then((res) => {
+        console.log("Resume Info fetched successfully", res.data);
+
+        // ensure safe defaults
+        const resumeData = {
+          education: res.data?.data?.education || [],
+          skills: res.data?.data?.skills || [],
+          experience: res.data?.data?.experience || [],
+          summery: res.data?.data?.summery || "",
+          ...res.data?.data, // keep other fields intact
+        };
+
+        setResumeInfo(resumeData);
+      })
+      .catch((err) => {
+        console.error("Error fetching resume info", err);
+      });
+  };
+
 
   return (
     <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>

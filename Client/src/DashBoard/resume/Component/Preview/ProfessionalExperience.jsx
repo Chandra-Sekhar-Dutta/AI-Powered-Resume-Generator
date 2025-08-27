@@ -14,7 +14,7 @@ const ProfessionalExperience = ({ resumeInfo }) => {
         className="my-4 border-t-2"
       />
 
-      {resumeInfo?.experience.map((exp, index) => (
+      {resumeInfo?.experience?.map((exp, index) => (
         <div key={index} className="mb-6">
           <h3 className="text-base font-semibold text-gray-800">
             {exp?.title}

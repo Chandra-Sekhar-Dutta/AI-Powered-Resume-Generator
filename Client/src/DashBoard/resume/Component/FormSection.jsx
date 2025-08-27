@@ -6,6 +6,7 @@ import Summary from './Forms/Summary'
 import Experience from './Forms/Experience'
 import Education from './Forms/Education'
 import Skill from './Forms/Skill'
+import Completed from './Forms/Completed'
 
 const FormSection = () => {
 
@@ -36,24 +37,32 @@ const FormSection = () => {
 
         <Button
           className="flex items-center gap-2 text-sm"
-          onClick={() => setActiveFromIndex(activeFromIndex + 1)}
-          disabled={!enableNext}
+          onClick={() => {
+            if (activeFromIndex < 6) {
+              setActiveFromIndex(activeFromIndex + 1)
+            }
+          }}
+          disabled={!enableNext} 
         >
-          Next
-          <ArrowRight size={18} />
+          {activeFromIndex === 6 ? "Done" : "Next"}
+          {activeFromIndex < 6 && <ArrowRight size={18} />}
         </Button>
+
       </div>
 
       {/* Personal Detaisl */}
-      { activeFromIndex===1? <PersonalDetails enableNext={setEnableNext} /> : null }
+      {activeFromIndex === 1 ? <PersonalDetails enableNext={setEnableNext} /> : null}
       {/* Summery */}
-      {activeFromIndex===2?<Summary enableNext={setEnableNext}/> : null}
+      {activeFromIndex === 2 ? <Summary enableNext={setEnableNext} /> : null}
       {/* Education */}
-      {activeFromIndex===3? <Education enableNext={setEnableNext}/>:null}
+      {activeFromIndex === 3 ? <Education enableNext={setEnableNext} /> : null}
       {/* Skills */}
-      {activeFromIndex===4? <Skill enableNext={setEnableNext} /> : null}
+      {activeFromIndex === 4 ? <Skill enableNext={setEnableNext} /> : null}
       {/* Experience */}
-      {activeFromIndex===5? <Experience enableNext={setEnableNext} /> : null}
+      {activeFromIndex === 5 ? <Experience enableNext={setEnableNext} /> : null}
+      {/* Completed */}
+      {activeFromIndex === 6 && <Completed enableNext={setEnableNext} />}
+
     </div>
   )
 }
