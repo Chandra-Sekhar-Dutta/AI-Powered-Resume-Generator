@@ -15,10 +15,19 @@ const Skill = ({ enableNext }) => {
     items: []
   }
 
+    useEffect(() => {
+      resumeInfo && setSkills(resumeInfo.skills || [formField])
+    }, []);
+
   const [loading, setLoading] = useState(false)
   const [skills, setSkills] = useState([formField])
 
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext)
+
+  // Initially disable Next
+  useEffect(() => {
+    enableNext(false)
+  }, [enableNext])
 
   const handleChange = (index, e) => {
     const newSkills = [...skills]
@@ -41,8 +50,8 @@ const Skill = ({ enableNext }) => {
 
     if (isIncomplete) {
       setLoading(false)
-      toast("Please fill all skill details")
-      enableNext(true)
+      toast.error("⚠️ Please fill all skill details before saving")
+      enableNext(false) // keep next disabled
       return
     }
 
@@ -50,18 +59,18 @@ const Skill = ({ enableNext }) => {
 
     GlobalAPI.UpdateResumeDetail(params?.resumeId, data)
       .then((res) => {
-        enableNext(true)
         setLoading(false)
         toast.success("Skills updated successfully 🎉")
+        enableNext(true) // allow moving forward ONLY after successful save
         console.log("Skills updated successfully", res.data)
       })
       .catch((err) => {
         setLoading(false)
-        toast.error("Error updating skills")
+        toast.error("❌ Error updating skills")
+        enableNext(false)
         console.error("Error updating skills:", err)
       })
   }
-
 
   useEffect(() => {
     setResumeInfo({ ...resumeInfo, skills })
@@ -109,7 +118,6 @@ const Skill = ({ enableNext }) => {
                   placeholder="Ex: C++, Python, React.js"
                   className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                 />
-
               </div>
             </div>
 

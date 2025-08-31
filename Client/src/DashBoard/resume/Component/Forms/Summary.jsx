@@ -66,7 +66,7 @@ const Summary = ({ enableNext }) => {
             .then((res) => {
                 enableNext(true)
                 setLoading(false)
-                toast("Details updated")
+                toast("Details updated 🎉")
 
             })
             .catch((err) => {

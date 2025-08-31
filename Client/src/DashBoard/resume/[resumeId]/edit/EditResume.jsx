@@ -27,7 +27,7 @@ const EditResume = () => {
           skills: res.data?.data?.skills || [],
           experience: res.data?.data?.experience || [],
           summery: res.data?.data?.summery || "",
-          ...res.data?.data, // keep other fields intact
+          ...res.data?.data, 
         };
 
         setResumeInfo(resumeData);
@@ -48,7 +48,7 @@ const EditResume = () => {
           </div>
 
           {/* Resume Preview Section */}
-          <div className="bg-white rounded-xl shadow-md p-6 overflow-y-auto max-h-[85vh]">
+          <div className="bg-white rounded-xl shadow-md p-6 overflow-y-auto max-h-[85vh]"  id="resume-preview">
             <ResumePreview />
           </div>
         </div>

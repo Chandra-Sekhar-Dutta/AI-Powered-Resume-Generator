@@ -16,12 +16,12 @@ const Skill = ({ resumeInfo }) => {
       />
 
       {/* Skills */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 skills-grid">
         {resumeInfo?.skills?.map((skill, index) => (
           <div key={index}>
             {/* Category */}
             <h3
-              className="text-sm font-semibold mb-1"
+              className="text-sm font-semibold mb-1 skill-category"
               style={{ color: resumeInfo?.themeColor }}
             >
               {skill?.category}

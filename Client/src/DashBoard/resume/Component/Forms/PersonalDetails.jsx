@@ -48,7 +48,7 @@ const PersonalDetails = ({ enableNext }) => {
         console.log("Resume details updated successfully:", res.data)
         enableNext(true)
         setLoading(false)
-        toast("Detail updated.")
+        toast("Detail updated 🎉")
 
       })
       .catch((err) => {

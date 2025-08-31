@@ -1,11 +1,48 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { CheckCircle } from 'lucide-react'
+import { ResumeInfoContext } from '@/Context/ResumeInfoContext'
+
 
 const Completed = ({ enableNext }) => {
+  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext)
   
+  
+  const handleDownload = async () => {
+  const resumeElement = document.getElementById("resume-preview");
+
+  if (!resumeElement) {
+    alert("Resume preview not found!");
+    return;
+  }
+
+  // Capture the full styled HTML
+  const htmlContent = resumeElement.outerHTML;
+
+  const response = await fetch("http://localhost:5001/pdf/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ html: htmlContent })
+  });
+
+  if (!response.ok) {
+    alert("Failed to generate PDF");
+    return;
+  }
+
+  // Download the PDF
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "resume.pdf";
+  link.click();
+};
+
+
+
   // As soon as Completed is mounted, disable Next
-  React.useEffect(() => {
+  useEffect(() => {
     enableNext(false)
   }, [enableNext])
 
@@ -18,7 +55,7 @@ const Completed = ({ enableNext }) => {
       <p className="text-gray-600 mb-6">
         You've successfully completed all the sections of your resume builder.
       </p>
-      <Button onClick={() => console.log("Submit / Redirect action")}>
+      <Button onClick={handleDownload }>
         Download Resume
       </Button>
     </div>

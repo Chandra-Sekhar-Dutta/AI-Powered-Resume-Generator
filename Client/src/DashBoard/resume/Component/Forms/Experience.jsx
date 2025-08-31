@@ -18,6 +18,10 @@ const Experience = ({ enableNext }) => {
     workSummery: ""
   }
 
+      useEffect(() => {
+        resumeInfo && setExperience(resumeInfo.experience || [formField])
+      }, []);
+
   const params = useParams()
   const [experience, setExperience] = useState([formField])
   const [loading, setLoading] = useState(false)
@@ -29,15 +33,26 @@ const Experience = ({ enableNext }) => {
     const { name, value, type, checked } = e.target
     NewEntries[index][name] = type === "checkbox" ? checked : value
     setExperience(NewEntries)
+    enableNext(false) // disable next again if they start editing
   }
 
-  const addNweExperience = () => setExperience([...experience, { ...formField }])
-  const RemoveExperience = () => experience.length > 1 && setExperience(experience.slice(0, -1))
+  const addNweExperience = () => {
+    setExperience([...experience, { ...formField }])
+    enableNext(false) // disable until saved again
+  }
+
+  const RemoveExperience = () => {
+    if (experience.length > 1) {
+      setExperience(experience.slice(0, -1))
+      enableNext(false)
+    }
+  }
 
   const onSave = (e) => {
     e.preventDefault()
     setLoading(true)
 
+    // validation
     const isIncomplete = experience.some(exp =>
       !exp.title.trim() ||
       !exp.companyName.trim() ||
@@ -50,24 +65,23 @@ const Experience = ({ enableNext }) => {
 
     if (isIncomplete) {
       setLoading(false);
-      toast("Please fill all experience details");
-      enableNext(false);
+      toast.error("⚠️ Please fill all experience details before proceeding.");
+      enableNext(false); // keep Next disabled
       return;
     }
-
 
     const data = { data: { experience } }
 
     GlobalAPI.UpdateResumeDetail(params?.resumeId, data)
       .then((res) => {
-        enableNext(true)
+        enableNext(true) // allow going Next only after successful save
         setLoading(false)
         toast.success("Experience updated successfully 🎉")
         console.log("Experience updated successfully", res.data);
       })
       .catch((err) => {
         setLoading(false)
-        toast.error("Error updating experience")
+        toast.error("❌ Error updating experience")
         console.error("Error updating experience:", err)
       })
   }
