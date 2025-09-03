@@ -15,6 +15,7 @@ export const generateResumePDF = async (req, res) => {
       `
       <html>
         <head>
+        
           <meta charset="utf-8"/>
           <title>Resume</title>
           <!-- Tailwind -->
