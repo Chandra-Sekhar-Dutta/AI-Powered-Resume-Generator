@@ -16,7 +16,7 @@ const PersonalDetails = ({ enableNext }) => {
 
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext)
 
-  const [formdata, setFormData] = useState()
+  const [formdata, setFormData] = useState(resumeInfo || {})
   const [loading, setLoading] = useState(false)
 
   const handleInputChaneg = (e) => {

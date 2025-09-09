@@ -95,7 +95,7 @@ const Education = ({ enableNext }) => {
   }, [education, isIncomplete, isSaved])
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-md">
+    <div className="p-6 ">
       <h2 className="text-2xl font-semibold text-gray-800 mb-2">
         Educational Details
       </h2>

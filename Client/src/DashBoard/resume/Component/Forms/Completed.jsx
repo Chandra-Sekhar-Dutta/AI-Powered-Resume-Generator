@@ -1,45 +1,52 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle, LoaderCircle } from 'lucide-react'
 import { ResumeInfoContext } from '@/Context/ResumeInfoContext'
-
 
 const Completed = ({ enableNext }) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext)
-  
-  
+
+  const [loading, setLoading] = useState(false)
+
   const handleDownload = async () => {
-  const resumeElement = document.getElementById("resume-preview");
+    const resumeElement = document.getElementById("resume-preview")
+    if (!resumeElement) {
+      alert("Resume preview not found!")
+      return
+    }
 
-  if (!resumeElement) {
-    alert("Resume preview not found!");
-    return;
+    // start loader
+    setLoading(true)
+
+    try {
+      const htmlContent = resumeElement.outerHTML
+
+      const response = await fetch("http://localhost:5001/pdf/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ html: htmlContent })
+      })
+
+      if (!response.ok) {
+        alert("Failed to generate PDF")
+        return
+      }
+
+      // Download the PDF
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = url
+      link.download = "resume.pdf"
+      link.click()
+    } catch (err) {
+      console.error("PDF generation failed:", err)
+      alert("Something went wrong while generating the PDF.")
+    } finally {
+      // stop loader
+      setLoading(false)
+    }
   }
-
-  // Capture the full styled HTML
-  const htmlContent = resumeElement.outerHTML;
-
-  const response = await fetch("http://localhost:5001/pdf/generate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ html: htmlContent })
-  });
-
-  if (!response.ok) {
-    alert("Failed to generate PDF");
-    return;
-  }
-
-  // Download the PDF
-  const blob = await response.blob();
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "resume.pdf";
-  link.click();
-};
-
-
 
   // As soon as Completed is mounted, disable Next
   useEffect(() => {
@@ -55,8 +62,11 @@ const Completed = ({ enableNext }) => {
       <p className="text-gray-600 mb-6">
         You've successfully completed all the sections of your resume builder.
       </p>
-      <Button onClick={handleDownload }>
-        Download Resume
+      <Button onClick={handleDownload} disabled={loading}>
+        {loading ? (
+          <LoaderCircle className="animate-spin mr-2" size={20} />
+        ) : null}
+        {loading ? "Generating..." : "Download Resume"}
       </Button>
     </div>
   )

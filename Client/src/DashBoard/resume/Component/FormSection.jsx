@@ -14,7 +14,7 @@ const FormSection = () => {
   const [enableNext, setEnableNext] = React.useState(false)
 
   return (
-    <div className="p-6 space-y-6 bg-white rounded-xl shadow-md">
+    <div className="p-6 space-y-6 ">
       <div className="flex justify-between items-center">
         <Button
           variant="outline"
