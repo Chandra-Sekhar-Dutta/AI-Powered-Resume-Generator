@@ -61,8 +61,9 @@ const Experience = ({ enableNext }) => {
       !exp.city.trim() ||
       !exp.state.trim() ||
       !exp.startDate.trim() ||
-      (!exp.currentlyWorking && !exp.endDate.trim()) ||
+      (!exp.currentlyWorking && (!exp.endDate || !exp.endDate.trim())) ||
       !exp.workSummery.trim();
+
 
     if (isIncomplete) {
       setLoading(false);

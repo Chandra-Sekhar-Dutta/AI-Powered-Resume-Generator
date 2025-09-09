@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-const ResumeCardItems = ({ resume, onDelete }) => {
+const ResumeCardItems = ({ resume }) => {
   const navigate = useNavigate()
 
   // start closed
@@ -31,9 +31,9 @@ const ResumeCardItems = ({ resume, onDelete }) => {
     navigate(`/dashboard/resume/${resume.documentId}/edit`)
   }
 
-  // const onDelete=()=>{
-  //   console.log("Deleted the data from the database")
-  // }
+  const onDelete=()=>{
+    console.log("Deleted the data from the database")
+  }
 
   return (
     <div className="relative">

@@ -2,33 +2,33 @@ import React from 'react'
 
 const Skill = ({ resumeInfo }) => {
   return (
-    <div className="px-6 py-4">
-      {/* Heading */}
+    <div className="px-4 py-2">
+      {/* Heading - Match other sections */}
       <h2
-        className="text-lg font-bold uppercase tracking-wide mb-2"
+        className="text-lg font-semibold text-left text-gray-800"
         style={{ color: resumeInfo?.themeColor }}
       >
         Skills
       </h2>
       <hr
         style={{ borderColor: resumeInfo?.themeColor }}
-        className="mb-4 border-t-2"
+        className="my-4 border-t-2"
       />
 
-      {/* Skills */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 skills-grid">
+      {/* Skills Grid - Always 2 columns */}
+      <div className="grid grid-cols-2 gap-y-3 gap-x-6">
         {resumeInfo?.skills?.map((skill, index) => (
           <div key={index}>
             {/* Category */}
             <h3
-              className="text-sm font-semibold mb-1 skill-category"
+              className="text-sm font-semibold mb-1"
               style={{ color: resumeInfo?.themeColor }}
             >
               {skill?.category}
             </h3>
 
             {/* Items inline, resume-style */}
-            <p className="text-sm text-gray-800">
+            <p className="text-sm text-gray-700">
               {skill?.items.join(', ')}
             </p>
           </div>
