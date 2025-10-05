@@ -5,7 +5,6 @@ import { ResumeInfoContext } from '@/Context/ResumeInfoContext'
 
 const Completed = ({ enableNext }) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext)
-
   const [loading, setLoading] = useState(false)
 
   const handleDownload = async () => {
@@ -15,20 +14,27 @@ const Completed = ({ enableNext }) => {
       return
     }
 
-    // start loader
     setLoading(true)
 
     try {
+      // Get the computed styles to preserve colors and formatting
       const htmlContent = resumeElement.outerHTML
+
+      console.log("Sending HTML to backend, length:", htmlContent.length)
+      console.log(htmlContent)
 
       const response = await fetch("http://localhost:5001/pdf/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ html: htmlContent })
+        
       })
 
+
       if (!response.ok) {
-        alert("Failed to generate PDF")
+        const errorData = await response.json()
+        console.error("Server error:", errorData)
+        alert(`Failed to generate PDF: ${errorData.details || 'Unknown error'}`)
         return
       }
 
@@ -37,18 +43,21 @@ const Completed = ({ enableNext }) => {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
       link.href = url
-      link.download = "resume.pdf"
+      link.download = `${resumeInfo?.firstName || 'resume'}_${resumeInfo?.lastName || ''}.pdf`.trim()
+      document.body.appendChild(link)
       link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      
+      console.log("PDF downloaded successfully")
     } catch (err) {
       console.error("PDF generation failed:", err)
-      alert("Something went wrong while generating the PDF.")
+      alert("Something went wrong while generating the PDF. Check console for details.")
     } finally {
-      // stop loader
       setLoading(false)
     }
   }
 
-  // As soon as Completed is mounted, disable Next
   useEffect(() => {
     enableNext(false)
   }, [enableNext])
@@ -66,7 +75,7 @@ const Completed = ({ enableNext }) => {
         {loading ? (
           <LoaderCircle className="animate-spin mr-2" size={20} />
         ) : null}
-        {loading ? "Generating..." : "Download Resume"}
+        {loading ? "Generating PDF..." : "Download Resume"}
       </Button>
     </div>
   )
