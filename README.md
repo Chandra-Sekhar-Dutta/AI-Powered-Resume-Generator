@@ -26,7 +26,7 @@ resumeBuilder/
 │
 ├── Server/
 │   ├── ResumeBuilder/     # Strapi backend (resume data API)
-│   └── PDFService/        # Node.js microservice for PDF generation
+│   └── resume-pdf-backend/        # Node.js microservice for PDF generation
 │
 └── package.json           # (empty, use Client/ and Server/ package.json)
 ```
@@ -94,10 +94,10 @@ cd ../Server/ResumeBuilder
 npm install
 ```
 
-#### Server/PDFService
+#### Server/resume-pdf-backend
 
 ```sh
-cd ../PDFService
+cd ../resume-pdf-backend
 npm install
 ```
 
@@ -117,10 +117,10 @@ npm run start
 - Runs on [http://localhost:1337](http://localhost:1337)
 - Access Strapi admin at `/admin`
 
-#### Start PDFService
+#### Start resume-pdf-backend
 
 ```sh
-cd ../PDFService
+cd ../resume-pdf-backend
 npm run start
 ```
 
@@ -157,7 +157,7 @@ npm run dev
 
 ## Customization
 
-- **PDF Styling:** Edit [Server/PDFService/controllers/pdfController.js](Server/PDFService/controllers/pdfController.js) for custom print styles.
+- **PDF Styling:** Edit [Server/PDFService/controllers/resume-pdf-backend.js](Server/resume-pdf-backend/controllers/pdfController.js) for custom print styles.
 - **Resume Data Model:** Modify Strapi content type in [Server/ResumeBuilder/src/api/user-resume/content-types/user-resume/schema.json](Server/ResumeBuilder/src/api/user-resume/content-types/user-resume/schema.json).
 
 ---
