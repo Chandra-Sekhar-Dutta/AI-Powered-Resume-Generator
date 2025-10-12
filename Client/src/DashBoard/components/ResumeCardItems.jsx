@@ -1,4 +1,4 @@
-import { Notebook, MoreVertical, Trash2, Edit3 } from 'lucide-react'
+import { Notebook, MoreVertical, Trash2, Edit3, LoaderCircle } from 'lucide-react'
 import React, { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
@@ -20,19 +20,33 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import GlobalAPI from './../../../Service/GlobalAPI';
+import { toast } from 'sonner'
 
-const ResumeCardItems = ({ resume }) => {
+const ResumeCardItems = ({ resume, refreshData }) => {
   const navigate = useNavigate()
 
   // start closed
   const [alertOpen, setAlertOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleNavigation = () => {
     navigate(`/dashboard/resume/${resume.documentId}/edit`)
   }
 
-  const onDelete=()=>{
-    console.log("Deleted the data from the database")
+  const onDelete = () => {
+    setIsLoading(true)
+    GlobalAPI.DeleteResumeByID(resume.documentId)
+      .then(res => {
+        console.log("Resume deleted successfully", res)
+        toast('SUCCESS: Resume deleted successfully', { type: 'success' })
+        refreshData()
+        setIsLoading(false)
+      })
+      .catch(err => {
+        console.error("Error deleting resume:", err);
+        setIsLoading(false)
+      })
   }
 
   return (
@@ -94,12 +108,21 @@ const ResumeCardItems = ({ resume }) => {
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => {
-                  onDelete(resume.documentId) // call delete handler
-                  setAlertOpen(false) // close dialog
+                  if (!isLoading) onDelete(resume.documentId);
                 }}
+                disabled={isLoading}
+                className="flex items-center justify-center gap-2"
               >
-                Delete
+                {isLoading ? (
+                  <>
+                    <LoaderCircle className="animate-spin w-4 h-4" />
+                    Deleting...
+                  </>
+                ) : (
+                  "Delete"
+                )}
               </AlertDialogAction>
+
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

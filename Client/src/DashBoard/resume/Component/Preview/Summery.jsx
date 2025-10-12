@@ -8,7 +8,7 @@ const Summery = ({ resumeInfo }) => {
                 style={{ color: resumeInfo?.themeColor }}'>
         Summary
       </h2>
-      <p className="text-sm text-gray-700 leading-relaxed">
+      <p className="text-sm text-gray-700 leading-relaxed text-justify">
         {resumeInfo?.summery}
       </p>
     </div>

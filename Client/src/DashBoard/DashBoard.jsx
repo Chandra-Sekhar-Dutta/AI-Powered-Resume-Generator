@@ -39,7 +39,7 @@ const DashBoard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           <AddResumeButton />
           {resumeList.length>0 && resumeList.map((resume, index) => (
-            <ResumeCardItems resume={resume} key={index}/>
+            <ResumeCardItems resume={resume} key={index} refreshData={GetResumeList}/>
           ))}
         </div>
       </div>
